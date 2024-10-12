@@ -80,3 +80,7 @@
 - `internal/api/routes.go`: 定義 API 路由
 - `internal/api/handlers/server.go`: 處理 API 請求
 - `internal/service/server.go`: 實現 Minecraft 伺服器狀態查詢邏輯
+
+## 授權
+
+本專案採用 MIT 授權。詳情請參閱 [LICENSE](LICENSE) 文件。
