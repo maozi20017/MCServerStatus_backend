@@ -1,11 +1,13 @@
 # Minecraft 伺服器狀態查詢
 
-這是一個用 Go 語言編寫的 Web 服務，用於查詢 Minecraft 伺服器的狀態。它使用 Gin 框架來處理 HTTP 請求，並實現了 Minecraft 伺服器查詢協議來獲取伺服器資訊。
+這是一個用 Go 語言編寫的 Web 服務，用於查詢 Minecraft 伺服器的狀態。它使用 Gin 框架來處理 HTTP 請求，並實現了官方的 Server List Ping (SLP) 協議來獲取伺服器資訊。
 
 ## 功能特點
 
 - 查詢 Minecraft 伺服器狀態
 - 支援自定義端口
+- 使用官方 SLP 協議，而非第三方實現
+- 包含 VarInt 的編碼和解碼實現
 - 處理各種伺服器回應格式
 - 使用 Gin 框架提供 RESTful API
 
@@ -80,6 +82,14 @@
 - `internal/api/routes.go`: 定義 API 路由
 - `internal/api/handlers/server.go`: 處理 API 請求
 - `internal/service/server.go`: 實現 Minecraft 伺服器狀態查詢邏輯
+
+## SLP 協議實現
+本專案使用官方的 Server List Ping (SLP) 協議來查詢 Minecraft 伺服器狀態。SLP 協議的實現包括：
+
+- 建立 TCP 連接
+- 發送握手包
+- 發送狀態請求包
+- 接收和解析伺服器回應
 
 ## 授權
 
