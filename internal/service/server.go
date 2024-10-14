@@ -47,15 +47,28 @@ func NewPacketBuffer() *PacketBuffer {
 	return &PacketBuffer{}
 }
 
-// WriteVarInt 寫入一個變長整數到緩衝區
+// WriteVarInt 將一個 32 位整數編碼為 VarInt 格式並寫入緩衝區
+// VarInt 是一種可變長度的整數編碼方式，用於在較少的字節中表示小的數值
 func (pb *PacketBuffer) WriteVarInt(val int32) error {
+	// 將有符號整數轉換為無符號整數
+	// 這是因為 VarInt 編碼實際上是基於無符號整數的
 	ux := uint32(val)
+
+	// 持續編碼直到值小於 0x80 (128)
 	for ux >= 0x80 {
+		// 對於每個字節，除了最後一個：
+		// 1. 使用位或運算 (|) 將最高位設置為 1，表示還有後續字節
+		// 2. 僅寫入低 7 位作為當前字節的數據位
 		if err := pb.buffer.WriteByte(byte(ux) | 0x80); err != nil {
 			return err
 		}
+
+		// 將值右移 7 位，準備編碼下一個字節
 		ux >>= 7
 	}
+
+	// 寫入最後一個字節
+	// 這個字節的最高位是 0，表示 VarInt 的結束
 	return pb.buffer.WriteByte(byte(ux))
 }
 
